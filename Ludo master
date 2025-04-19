@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>লুডু টুর্নামেন্ট</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans Bengali', sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    .tournament-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      padding: 10px;
+      background: #2e86de;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #216ab3;
+    }
+
+    #game-info {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>লুডু টুর্নামেন্ট</h1>
+  <div class="tournament-container">
+    <h2>AI বনাম আপনি</h2>
+    <button class="button" onclick="startGame()">গেম শুরু করুন</button>
+  </div>
+
+  <div id="game-info"></div>
+
+  <script>
+    let playerScore = 0;
+    let aiScore = 0;
+
+    // র‍্যান্ডম ডাইস রোল ফাংশন
+    function rollDice() {
+      return Math.floor(Math.random() * 6) + 1;
+    }
+
+    // AI এর মুভমেন্ট
+    function aiMove() {
+      let aiRoll = rollDice();
+      aiScore += aiRoll;
+      return aiRoll;
+    }
+
+    // গেম শুরু
+    function startGame() {
+      document.getElementById('game-info').innerHTML = `
+        <p>খেলা শুরু হচ্ছে...</p>
+        <p><strong>আপনার স্কোর:</strong> ${playerScore}</p>
+        <p><strong>AI স্কোর:</strong> ${aiScore}</p>
+      `;
+      
+      playRound(); // রাউন্ড শুরু হবে
+    }
+
+    // একটি রাউন্ড খেলা
+    function playRound() {
+      let playerRoll = rollDice(); // ইউজারের ডাইস রোল
+      playerScore += playerRoll;
+
+      // AI এর মুভ
+      let aiRoll = aiMove();
+
+      // ফলাফল দেখানো
+      document.getElementById('game-info').innerHTML = `
+        <p><strong>আপনি রোল করেছেন: ${playerRoll}</strong></p>
+        <p><strong>AI রোল করেছে: ${aiRoll}</strong></p>
+        <p><strong>আপনার স্কোর:</strong> ${playerScore}</p>
+        <p><strong>AI স্কোর:</strong> ${aiScore}</p>
+      `;
+
+      // জয়ী ঘোষণা
+      if (playerScore >= 20 && playerScore > aiScore) {
+        document.getElementById('game-info').innerHTML += `<p><strong>আপনি জয়ী!</strong></p>`;
+      } else if (aiScore >= 20 && aiScore > playerScore) {
+        document.getElementById('game-info').innerHTML += `<p><strong>AI জয়ী!</strong></p>`;
+      } else {
+        setTimeout(playRound, 1000); // ১ সেকেন্ড পর আবার রাউন্ড শুরু হবে
+      }
+    }
+  </script>
+</body>
+</html>
